@@ -20,6 +20,9 @@ def create_journal(payload: JournalCreate):
     pdf_bytes = download_pdf(payload.pdf_url)
 
     text = extract_text(pdf_bytes)
+    print("=" * 50)
+    print(text[:5000])
+    print("=" * 50)
 
     metadata = extract_metadata(text)
 
