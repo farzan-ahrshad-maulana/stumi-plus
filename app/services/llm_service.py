@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -14,6 +15,23 @@ client = OpenAI(
 )
 
 import json
+
+
+def parse_json_response(content: str) -> dict:
+
+    content = content.strip()
+
+    match = re.search(
+        r"\{.*\}",
+        content,
+        re.DOTALL,
+    )
+
+    if not match:
+        raise ValueError(f"No JSON found in response: {content}")
+
+    return json.loads(match.group())
+
 
 from app.schemas.metadata import LLMMetadata
 
@@ -55,7 +73,18 @@ Do not wrap JSON in code fences.
 
     content = response.choices[0].message.content
 
-    data = json.loads(content)
+    content = content.strip()
+
+    match = re.search(
+        r"\{.*\}",
+        content,
+        re.DOTALL,
+    )
+
+    if not match:
+        raise ValueError(f"No JSON found in response: {content}")
+
+    data = parse_json_response(content)
 
     return LLMMetadata(**data)
 
