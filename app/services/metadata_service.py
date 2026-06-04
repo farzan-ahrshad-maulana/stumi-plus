@@ -17,8 +17,14 @@ def extract_metadata(text: str) -> ExtractedMetadata:
 
     title = ""
 
-    for line in lines:
-        if len(line) > 10 and "attention is all you need" in line.lower():
+    for line in lines[:20]:
+        if (
+            len(line) > 10
+            and len(line) < 200
+            and "abstract" not in line.lower()
+            and "provided proper attribution" not in line.lower()
+            and "reproduce the tables" not in line.lower()
+        ):
             title = line
             break
 
