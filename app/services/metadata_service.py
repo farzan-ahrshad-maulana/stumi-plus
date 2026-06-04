@@ -6,6 +6,8 @@ class ExtractedMetadata(BaseModel):
 
     authors: str
 
+    institution: str
+
     abstract: str
 
 
@@ -41,8 +43,10 @@ def extract_metadata(text: str) -> ExtractedMetadata:
 
             break
 
+    institution = ""
     return ExtractedMetadata(
         title=title,
         authors=authors,
+        institution=institution,
         abstract=abstract,
     )
