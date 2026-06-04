@@ -28,14 +28,11 @@ class Journal(Base):
 
     authors: Mapped[str] = mapped_column(Text)
 
-    institution: Mapped[str] = mapped_column(Text)
+    institution: Mapped[str | None] = mapped_column(Text, nullable=True)
+    journal_name: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
-    journal_name: Mapped[str] = mapped_column(String(300))
-
-    volume: Mapped[str] = mapped_column(String(50))
-
-    publication_date: Mapped[Date] = mapped_column(Date)
-
+    volume: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    publication_date: Mapped[Date | None] = mapped_column(Date, nullable=True)
     abstract: Mapped[str] = mapped_column(Text)
 
     pdf_url: Mapped[str] = mapped_column(Text)
