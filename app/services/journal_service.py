@@ -13,6 +13,7 @@ def create_journal(
     journal = Journal(
         title=metadata.title,
         authors=metadata.authors,
+        institution=metadata.institution,
         abstract=metadata.abstract,
         pdf_url=pdf_url,
     )
