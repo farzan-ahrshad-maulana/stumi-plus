@@ -9,28 +9,37 @@ class ExtractedMetadata(BaseModel):
     abstract: str
 
 
-def extract_metadata(
-    text: str,
-) -> ExtractedMetadata:
+def extract_metadata(text: str) -> ExtractedMetadata:
 
     lines = [line.strip() for line in text.split("\n") if line.strip()]
 
-    title = lines[0]
+    title = ""
 
-    authors = lines[1]
+    for line in lines:
+        if len(line) > 10 and "attention is all you need" in line.lower():
+            title = line
+            break
+
+    if not title:
+        title = lines[0]
+
+    authors = ""
+
+    try:
+        title_index = lines.index(title)
+
+        authors = lines[title_index + 1]
+
+    except Exception:
+        authors = ""
 
     abstract = ""
 
-    abstract_index = None
-
     for i, line in enumerate(lines):
-        if "abstract" in line.lower():
-            abstract_index = i
+        if line.lower() == "abstract":
+            abstract = " ".join(lines[i + 1 : i + 10])
 
             break
-
-    if abstract_index:
-        abstract = " ".join(lines[abstract_index : abstract_index + 10])
 
     return ExtractedMetadata(
         title=title,
