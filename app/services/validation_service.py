@@ -1,9 +1,19 @@
+from app.core.logger import logger
 from app.schemas.metadata import LLMMetadata
 
 
 def basic_validation(
     text: str,
 ) -> tuple[bool, str]:
+
+    is_valid, reason = academic_structure_validation(text)
+
+    if not is_valid:
+        logger.warning(reason)
+        return {
+            "status": "rejected",
+            "reason": reason,
+        }
 
     if not text.strip():
         return False, "PDF contains no extractable text"

@@ -20,6 +20,11 @@ def ask_question(
         question=question,
         limit=5,
     )
+    if not results:
+        return {
+            "answer": "No relevant content found.",
+            "sources": [],
+        }
 
     context = "\n\n".join(row.chunk_text for row in results)
 
