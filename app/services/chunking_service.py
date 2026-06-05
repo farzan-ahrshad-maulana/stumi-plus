@@ -20,7 +20,7 @@ def chunk_text(text: str) -> list[TextChunk]:
     index = 0
 
     while start < len(words):
-
+        end = start + CHUNK_SIZE
 
         chunk_words = words[start:end]
 
