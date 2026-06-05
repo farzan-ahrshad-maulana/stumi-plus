@@ -98,3 +98,41 @@ def test_openrouter():
     )
 
     return response.choices[0].message.content
+
+
+def generate_answer(
+    question: str,
+    context: str,
+) -> str:
+
+    response = client.chat.completions.create(
+        model="deepseek/deepseek-chat-v3",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+You are a research assistant.
+
+Answer only from the provided context.
+
+If the answer is not contained in the context,
+say that the information is not available.
+""",
+            },
+            {
+                "role": "user",
+                "content": f"""
+Context:
+
+{context}
+
+Question:
+
+{question}
+""",
+            },
+        ],
+        temperature=0,
+    )
+
+    return response.choices[0].message.content
