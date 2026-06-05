@@ -26,7 +26,8 @@ def chat(
     try:
         start_time = time.time()
         logger.info(f"Question received for journal {payload.journal_id}")
-        start_time = time.time()
+
+        logger.info(f"Question: {payload.question}")
 
         result = ask_question(
             db=db,
