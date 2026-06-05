@@ -5,6 +5,9 @@ from app.api.chat import (
     router as chat_router,
 )
 from app.api.journals import router as journal_router
+from app.api.stats import (
+    router as stats_router,
+)
 from app.db.database import engine
 
 app = FastAPI(title="Stumi", version="0.1.0")
