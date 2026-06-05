@@ -2,6 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
+from app.repositories.journal_repository import (
+    get_journals,
+)
 from app.schemas.journal import (
     JournalCreate,
 )
