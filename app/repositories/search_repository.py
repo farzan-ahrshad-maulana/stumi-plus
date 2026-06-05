@@ -7,15 +7,20 @@ def search_chunks(
     embedding: list[float],
     limit: int = 5,
 ):
+
     query = text(
         """
         SELECT
-            id,
-            journal_id,
-            chunk_text,
+            c.id,
+            c.journal_id,
+            c.chunk_index,
+            c.chunk_text,
+            j.title,
             embedding <=> CAST(:embedding AS vector)
                 AS distance
-        FROM chunks
+        FROM chunks c
+        JOIN journals j
+            ON c.journal_id = j.id
         ORDER BY embedding <=> CAST(:embedding AS vector)
         LIMIT :limit
         """
