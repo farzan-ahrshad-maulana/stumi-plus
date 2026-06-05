@@ -23,6 +23,7 @@ def chat(
 
     result = ask_question(
         db=db,
+        journal_id=payload.journal_id,
         question=payload.question,
     )
 
