@@ -56,3 +56,21 @@ def create_journal_endpoint(
         "chunks": chunk_count,
         "status": "saved",
     }
+
+
+@router.get("/")
+def list_journals(
+    db: Session = Depends(get_db),
+):
+
+    journals = get_journals(db)
+
+    return [
+        {
+            "id": journal.id,
+            "title": journal.title,
+            "authors": journal.authors,
+            "pdf_url": journal.pdf_url,
+        }
+        for journal in journals
+    ]
