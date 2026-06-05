@@ -13,6 +13,7 @@ from app.schemas.journal import (
 from app.services.journal_service import create_journal
 from app.services.llm_service import (
     extract_metadata_with_llm,
+    validate_research_paper,
 )
 from app.services.metadata_service import (
     extract_metadata,
@@ -20,6 +21,9 @@ from app.services.metadata_service import (
 from app.services.pdf_service import (
     download_pdf,
     extract_text,
+)
+from app.services.validation_service import (
+    basic_validation,
 )
 from app.services.vector_store_service import (
     store_chunks,
