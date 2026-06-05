@@ -37,6 +37,32 @@ def create_journal_endpoint(
     payload: JournalCreate,
     db: Session = Depends(get_db),
 ):
+    try:
+
+        logger.info(
+            f"New journal submission: {payload.pdf_url}"
+        )
+
+        ...
+        seluruh kode existing ...
+
+        return {
+            "id": journal.id,
+            "title": journal.title,
+            "chunks": chunk_count,
+            "status": "saved",
+        }
+
+    except Exception as e:
+
+        logger.exception(
+            "Journal ingestion failed"
+        )
+
+        return {
+            "status": "error",
+            "message": str(e),
+        }
     logger.info(f"New journal submission: {payload.pdf_url}")
 
     start_time = time.time()
