@@ -11,7 +11,7 @@ client = OpenAI(
 )
 
 response = client.embeddings.create(
-    model="qwen/qwen3-embedding-8b",
+    model="baai/bge-m3",
     input="Attention Is All You Need",
 )
 

@@ -53,7 +53,7 @@ class Chunk(Base):
 
     chunk_text: Mapped[str] = mapped_column(Text)
 
-    embedding: Mapped[list[float]] = mapped_column(Vector(768))
+    embedding: Mapped[list[float]] = mapped_column(Vector(1024))
 
     chunk_index: Mapped[int]
 
