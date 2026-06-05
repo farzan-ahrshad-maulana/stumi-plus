@@ -7,3 +7,10 @@ def get_journals(
     db: Session,
 ):
     return db.query(Journal).order_by(Journal.id.desc()).all()
+
+
+def get_journal_by_id(
+    db: Session,
+    journal_id: int,
+):
+    return db.query(Journal).filter(Journal.id == journal_id).first()
