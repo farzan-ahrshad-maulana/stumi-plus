@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from app.schemas.metadata import LLMMetadata
+from app.schemas.validation import ValidationResult
 
 load_dotenv()
 
