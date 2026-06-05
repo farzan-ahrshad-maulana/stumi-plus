@@ -137,3 +137,46 @@ Question:
     )
 
     return response.choices[0].message.content
+
+
+def validate_research_paper(
+    text: str,
+) -> ValidationResult:
+
+    preview = text[:5000]
+
+    response = client.chat.completions.create(
+        model="deepseek/deepseek-chat-v3",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+You are an academic document classifier.
+
+Determine whether the document is a real academic research paper.
+
+Return ONLY valid JSON.
+
+Schema:
+
+{
+  "is_research_paper": true,
+  "confidence": 0.95,
+  "reason": "..."
+}
+
+Do not use markdown.
+Do not wrap JSON in code fences.
+""",
+            },
+            {
+                "role": "user",
+                "content": preview,
+            },
+        ],
+        temperature=0,
+    )
+
+    content = parse_json_response(response.choices[0].message.content)
+
+    return ValidationResult(**content)
