@@ -26,4 +26,30 @@ def ask_question(
         context=context,
     )
 
-    return answer
+    sources = []
+
+    seen = set()
+
+    for row in results:
+        key = (
+            row.journal_id,
+            row.chunk_index,
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+
+        sources.append(
+            {
+                "journal_id": row.journal_id,
+                "title": row.title,
+                "chunk_index": row.chunk_index,
+            }
+        )
+
+    return {
+        "answer": answer,
+        "sources": sources,
+    }
