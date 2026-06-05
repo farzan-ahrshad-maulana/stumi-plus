@@ -17,6 +17,7 @@ def search_chunks(
             c.chunk_index,
             c.chunk_text,
             j.title,
+            j.pdf_url,
             embedding <=> CAST(:embedding AS vector)
                 AS distance
         FROM chunks c

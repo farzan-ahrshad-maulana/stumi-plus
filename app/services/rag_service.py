@@ -48,6 +48,7 @@ def ask_question(
                 "journal_id": row.journal_id,
                 "title": row.title,
                 "chunk_index": row.chunk_index,
+                "pdf_url": row.pdf_url,
             }
         )
 
