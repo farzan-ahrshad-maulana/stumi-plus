@@ -21,11 +21,9 @@ def chat(
     db: Session = Depends(get_db),
 ):
 
-    answer = ask_question(
+    result = ask_question(
         db=db,
         question=payload.question,
     )
 
-    return {
-        "answer": answer,
-    }
+    return result
