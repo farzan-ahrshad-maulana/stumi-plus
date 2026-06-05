@@ -41,8 +41,15 @@ def create_journal_endpoint(
         pdf_url=payload.pdf_url,
     )
 
+    chunk_count = store_chunks(
+        db=db,
+        journal_id=journal.id,
+        text=text,
+    )
+
     return {
         "id": journal.id,
         "title": journal.title,
+        "chunks": chunk_count,
         "status": "saved",
     }
