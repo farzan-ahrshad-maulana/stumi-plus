@@ -31,3 +31,26 @@ def validate_metadata(
         return False, "Abstract too short"
 
     return True, ""
+
+
+def academic_structure_validation(
+    text: str,
+) -> tuple[bool, str]:
+
+    text_lower = text.lower()
+
+    keywords = [
+        "abstract",
+        "introduction",
+        "references",
+    ]
+
+    found = sum(1 for keyword in keywords if keyword in text_lower)
+
+    if found < 2:
+        return (
+            False,
+            "Document does not appear to be an academic paper",
+        )
+
+    return True, ""

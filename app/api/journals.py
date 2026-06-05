@@ -41,8 +41,6 @@ def create_journal_endpoint(
     try:
         logger.info(f"New journal submission: {payload.pdf_url}")
 
-        logger.info(f"New journal submission: {payload.pdf_url}")
-
         start_time = time.time()
 
         existing = get_journal_by_pdf_url(
@@ -125,12 +123,12 @@ def create_journal_endpoint(
             "status": "saved",
         }
 
-    except Exception as e:
+    except Exception:
         logger.exception("Journal ingestion failed")
 
         return {
             "status": "error",
-            "message": str(e),
+            "message": "Internal server error",
         }
 
 
