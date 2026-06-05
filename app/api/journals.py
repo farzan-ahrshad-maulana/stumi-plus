@@ -24,6 +24,7 @@ from app.services.pdf_service import (
 )
 from app.services.validation_service import (
     basic_validation,
+    validate_metadata,
 )
 from app.services.vector_store_service import (
     store_chunks,
