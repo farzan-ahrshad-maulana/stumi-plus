@@ -22,6 +22,12 @@ def root():
     return {"message": "Welcome to Stumi Research Assitant"}
 
 
+@app.on_event("startup")
+def startup():
+
+    logger.info("Stumi API started successfully")
+
+
 @app.get("/health")
 def health():
 
