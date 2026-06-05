@@ -16,6 +16,9 @@ from app.services.pdf_service import (
     download_pdf,
     extract_text,
 )
+from app.services.vector_store_service import (
+    store_chunks,
+)
 
 router = APIRouter(prefix="/journals", tags=["journals"])
 
