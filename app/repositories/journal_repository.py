@@ -9,7 +9,12 @@ from app.services.metadata_service import (
 def get_journals(
     db: Session,
 ):
-    return db.query(Journal).order_by(Journal.id.desc()).all()
+    return (
+        db.query(Journal)
+        .filter(Journal.is_public == True)
+        .order_by(Journal.id.desc())
+        .all()
+    )
 
 
 def get_journal_by_id(
@@ -58,3 +63,41 @@ def get_journal_by_normalized_title_and_year(
         )
         .first()
     )
+
+
+def hide_journal(
+    db: Session,
+    journal: Journal,
+):
+
+    journal.is_public = False
+
+    db.commit()
+
+    db.refresh(journal)
+
+    return journal
+
+
+def unhide_journal(
+    db: Session,
+    journal: Journal,
+):
+
+    journal.is_public = True
+
+    db.commit()
+
+    db.refresh(journal)
+
+    return journal
+
+
+def delete_journal(
+    db: Session,
+    journal: Journal,
+):
+
+    db.delete(journal)
+
+    db.commit()

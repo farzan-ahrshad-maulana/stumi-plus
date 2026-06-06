@@ -1,5 +1,8 @@
 from sqlalchemy.orm import Session
 
+from app.repositories.journal_repository import (
+    get_journal_by_id,
+)
 from app.services.llm_service import (
     generate_answer,
 )
@@ -13,7 +16,22 @@ def ask_question(
     journal_id: int,
     question: str,
 ):
+    journal = get_journal_by_id(
+        db,
+        journal_id,
+    )
 
+    if not journal:
+        return {
+            "answer": "Journal not found.",
+            "sources": [],
+        }
+
+    if not journal.is_public:
+        return {
+            "answer": "Journal is not publicly accessible.",
+            "sources": [],
+        }
     results = retrieve_chunks(
         db=db,
         journal_id=journal_id,

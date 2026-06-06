@@ -6,11 +6,14 @@ from sqlalchemy.orm import Session
 from app.core.logger import logger
 from app.db.dependencies import get_db
 from app.repositories.journal_repository import (
+    delete_journal,
     get_journal_by_id,
     get_journal_by_normalized_title_and_year,
     get_journal_by_pdf_url,
     #    get_journal_by_title_and_year,
     get_journals,
+    hide_journal,
+    unhide_journal,
 )
 from app.schemas.journal import (
     JournalCreate,
@@ -224,6 +227,9 @@ def get_journal(
     if not journal:
         return {"error": "Journal not found"}
 
+    if not journal.is_public:
+        return {"error": "Journal not found"}
+
     return {
         "id": journal.id,
         "title": journal.title,
@@ -231,4 +237,79 @@ def get_journal(
         "institution": journal.institution,
         "abstract": journal.abstract,
         "pdf_url": journal.pdf_url,
+    }
+
+
+@router.patch("/{journal_id}/hide")
+def hide_journal_endpoint(
+    journal_id: int,
+    db: Session = Depends(get_db),
+):
+
+    journal = get_journal_by_id(
+        db,
+        journal_id,
+    )
+
+    if not journal:
+        return {"error": "Journal not found"}
+
+    hide_journal(
+        db,
+        journal,
+    )
+
+    return {
+        "id": journal.id,
+        "status": "hidden",
+    }
+
+
+@router.patch("/{journal_id}/unhide")
+def unhide_journal_endpoint(
+    journal_id: int,
+    db: Session = Depends(get_db),
+):
+
+    journal = get_journal_by_id(
+        db,
+        journal_id,
+    )
+
+    if not journal:
+        return {"error": "Journal not found"}
+
+    unhide_journal(
+        db,
+        journal,
+    )
+
+    return {
+        "id": journal.id,
+        "status": "public",
+    }
+
+
+@router.delete("/{journal_id}")
+def delete_journal_endpoint(
+    journal_id: int,
+    db: Session = Depends(get_db),
+):
+
+    journal = get_journal_by_id(
+        db,
+        journal_id,
+    )
+
+    if not journal:
+        return {"error": "Journal not found"}
+
+    delete_journal(
+        db,
+        journal,
+    )
+
+    return {
+        "id": journal_id,
+        "status": "deleted",
     }
