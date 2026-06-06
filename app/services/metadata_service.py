@@ -1,3 +1,5 @@
+import re
+
 from pydantic import BaseModel
 
 
@@ -56,3 +58,20 @@ def extract_metadata(text: str) -> ExtractedMetadata:
         institution=institution,
         abstract=abstract,
     )
+
+
+def normalize_title(
+    title: str,
+) -> str:
+
+    title = title.lower()
+
+    title = re.sub(
+        r"[^\w\s]",
+        " ",
+        title,
+    )
+
+    title = " ".join(title.split())
+
+    return title

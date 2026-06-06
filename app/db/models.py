@@ -27,6 +27,11 @@ class Journal(Base):
 
     title: Mapped[str] = mapped_column(String(500), nullable=False)
 
+    normalized_title: Mapped[str] = mapped_column(
+        String(500),
+        nullable=False,
+    )
+
     authors: Mapped[str] = mapped_column(Text)
 
     institution: Mapped[str | None] = mapped_column(Text, nullable=True)

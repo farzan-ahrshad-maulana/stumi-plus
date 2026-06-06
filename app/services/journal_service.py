@@ -2,6 +2,9 @@ from sqlalchemy.orm import Session
 
 from app.db.models import Journal
 from app.schemas.metadata import LLMMetadata
+from app.services.metadata_service import (
+    normalize_title,
+)
 
 
 def create_journal(
@@ -9,9 +12,10 @@ def create_journal(
     metadata: LLMMetadata,
     pdf_url: str,
 ) -> Journal:
-
+    normalized_title = normalize_title(metadata.title)
     journal = Journal(
         title=metadata.title,
+        normalized_title=normalized_title,
         authors=metadata.authors,
         institution=metadata.institution,
         publication_year=metadata.publication_year,

@@ -1,4 +1,4 @@
-# Stumi Plus
+# Stumi Plus v1.0.0
 
 from fastapi import FastAPI
 from sqlalchemy import text

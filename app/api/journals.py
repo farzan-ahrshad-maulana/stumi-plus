@@ -7,8 +7,9 @@ from app.core.logger import logger
 from app.db.dependencies import get_db
 from app.repositories.journal_repository import (
     get_journal_by_id,
+    get_journal_by_normalized_title_and_year,
     get_journal_by_pdf_url,
-    get_journal_by_title_and_year,
+    #    get_journal_by_title_and_year,
     get_journals,
 )
 from app.schemas.journal import (
@@ -120,7 +121,7 @@ def create_journal_endpoint(
 
         metadata_start = time.time()
         metadata = extract_metadata_with_llm(text)
-        existing = get_journal_by_title_and_year(
+        existing = get_journal_by_normalized_title_and_year(
             db=db,
             title=metadata.title,
             publication_year=metadata.publication_year,

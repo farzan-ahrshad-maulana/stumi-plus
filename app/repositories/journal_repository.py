@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session
 
 from app.db.models import Journal
+from app.services.metadata_service import (
+    normalize_title,
+)
 
 
 def get_journals(
@@ -33,6 +36,24 @@ def get_journal_by_title_and_year(
         db.query(Journal)
         .filter(
             Journal.title == title,
+            Journal.publication_year == publication_year,
+        )
+        .first()
+    )
+
+
+def get_journal_by_normalized_title_and_year(
+    db: Session,
+    title: str,
+    publication_year: int,
+):
+
+    normalized_title = normalize_title(title)
+
+    return (
+        db.query(Journal)
+        .filter(
+            Journal.normalized_title == normalized_title,
             Journal.publication_year == publication_year,
         )
         .first()
