@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.db.models import Journal
@@ -101,3 +102,41 @@ def delete_journal(
     db.delete(journal)
 
     db.commit()
+
+
+def semantic_search_journals(
+    db,
+    embedding,
+    limit=10,
+):
+
+    sql = text(
+        """
+        SELECT
+            id,
+            title,
+            authors,
+            publication_year,
+            pdf_url,
+            1 - (
+                abstract_embedding <=> CAST(:embedding AS vector)
+            ) AS score
+        FROM journals
+        WHERE
+            is_public = TRUE
+            AND abstract_embedding IS NOT NULL
+        ORDER BY
+            abstract_embedding <=> CAST(:embedding AS vector)
+        LIMIT :limit
+        """
+    )
+
+    result = db.execute(
+        sql,
+        {
+            "embedding": str(embedding),
+            "limit": limit,
+        },
+    )
+
+    return result.fetchall()

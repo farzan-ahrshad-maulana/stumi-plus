@@ -44,6 +44,11 @@ class Journal(Base):
         Integer,
         nullable=True,
     )
+    abstract_embedding: Mapped[list[float] | None] = mapped_column(
+        Vector(1024),
+        nullable=True,
+    )
+
     abstract: Mapped[str] = mapped_column(Text)
 
     pdf_url: Mapped[str] = mapped_column(Text)

@@ -18,6 +18,9 @@ from app.repositories.journal_repository import (
 from app.schemas.journal import (
     JournalCreate,
 )
+from app.schemas.search import (
+    SearchRequest,
+)
 from app.services.journal_service import create_journal
 from app.services.llm_service import (
     extract_metadata_with_llm,
@@ -25,6 +28,9 @@ from app.services.llm_service import (
 from app.services.pdf_service import (
     download_pdf,
     extract_text,
+)
+from app.services.search_service import (
+    search_journals,
 )
 from app.services.validation_service import (
     basic_validation,
@@ -313,3 +319,32 @@ def delete_journal_endpoint(
         "id": journal_id,
         "status": "deleted",
     }
+
+
+@router.post("/search")
+def semantic_search_endpoint(
+    payload: SearchRequest,
+    db: Session = Depends(get_db),
+):
+
+    results = search_journals(
+        db=db,
+        query=payload.query,
+        limit=payload.limit,
+    )
+
+    return [
+        {
+            "id": row.id,
+            "title": row.title,
+            "authors": row.authors,
+            "publication_year": row.publication_year,
+            "pdf_url": row.pdf_url,
+            "score": round(
+                float(row.score),
+                4,
+            ),
+        }
+        for row in results
+        #        if row.score > 0.50
+    ]
