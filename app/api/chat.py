@@ -1,9 +1,10 @@
 import time
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from app.core.logger import logger
+from app.core.rate_limit import limiter
 from app.db.dependencies import get_db
 from app.schemas.chat import (
     ChatRequest,
@@ -19,7 +20,10 @@ router = APIRouter(
 
 
 @router.post("/")
+@limiter.limit("20/minute")
+# @limiter.limit("3/minute")
 def chat(
+    request: Request,
     payload: ChatRequest,
     db: Session = Depends(get_db),
 ):

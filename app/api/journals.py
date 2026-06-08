@@ -1,9 +1,10 @@
 import time
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from app.core.logger import logger
+from app.core.rate_limit import limiter
 from app.db.dependencies import get_db
 from app.repositories.journal_repository import (
     delete_journal,
@@ -48,7 +49,9 @@ router = APIRouter(prefix="/journals", tags=["journals"])
 
 
 @router.post("/")
+@limiter.limit("5/minute")
 def create_journal_endpoint(
+    request: Request,
     payload: JournalCreate,
     db: Session = Depends(get_db),
 ):
@@ -322,7 +325,9 @@ def delete_journal_endpoint(
 
 
 @router.post("/search")
+@limiter.limit("30/minute")
 def semantic_search_endpoint(
+    request: Request,
     payload: SearchRequest,
     db: Session = Depends(get_db),
 ):
