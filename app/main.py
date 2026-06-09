@@ -31,6 +31,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://stumi-frontend.vercel.app",
+        "https://stumi-frontend-ot0y9168p-farzan-ahrshad-maulana-s-projects.vercel.app/",
     ],
     allow_credentials=True,
     allow_methods=["*"],
